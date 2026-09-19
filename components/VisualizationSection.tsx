@@ -1,6 +1,7 @@
 "use client";
 
 import { askDatabase } from "@/lib/ask-bridge";
+import { Reveal } from "@/components/Reveal";
 
 const CHART_EXAMPLES = [
   { label: "Pie", q: "Show me a pie chart of employees by department" },
@@ -8,11 +9,13 @@ const CHART_EXAMPLES = [
   { label: "Line", q: "Plot hiring over the last five years" },
 ];
 
+const ILLUSTRATIVE_BARS = [38, 62, 44, 80, 56, 70];
+
 export function VisualizationSection({ onSelect = askDatabase }: { onSelect?: (q: string) => void }) {
   return (
     <section className="border-t border-ink-800 bg-ink-950 py-28">
       <div className="section grid grid-cols-1 gap-16 md:grid-cols-2 md:items-center">
-        <div>
+        <Reveal>
           <p className="eyebrow mb-4">From answers to insight</p>
           <h2 className="font-display text-3xl text-ink-100 sm:text-4xl">
             DataMind chooses the chart. You never have to.
@@ -28,28 +31,31 @@ export function VisualizationSection({ onSelect = askDatabase }: { onSelect?: (q
               <button
                 key={c.label}
                 onClick={() => onSelect?.(c.q)}
-                className="rounded-sm border border-ink-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest2 text-ink-300 transition-colors hover:border-accent-400 hover:text-accent-400"
+                className="rounded-md border border-ink-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest2 text-ink-300 transition-all duration-300 ease-standard hover:border-accent-400 hover:text-accent-400"
               >
                 {c.label} — “{c.q}”
               </button>
             ))}
           </div>
-        </div>
+        </Reveal>
 
-        <div className="rounded-sm border border-ink-800 bg-ink-900 p-8">
-          <div className="flex items-end gap-3">
-            {[38, 62, 44, 80, 56, 70].map((h, i) => (
-              <div
-                key={i}
-                className="w-full rounded-t-sm bg-accent-500/70"
-                style={{ height: `${h * 2}px` }}
-              />
-            ))}
+        <Reveal delay={150}>
+          <div className="surface-card p-8">
+            <div className="flex items-end gap-3">
+              {ILLUSTRATIVE_BARS.map((h, i) => (
+                <div key={i} className="w-full">
+                  <div
+                    className="w-full rounded-t-md bg-gradient-to-t from-accent-600/80 to-accent-400/90 transition-all duration-500 ease-standard hover:from-accent-500 hover:to-accent-300"
+                    style={{ height: `${h * 2}px`, transitionDelay: `${i * 40}ms` }}
+                  />
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-xs uppercase tracking-widest2 text-ink-500">
+              Illustrative only — real charts render from your query results.
+            </p>
           </div>
-          <p className="mt-6 text-xs uppercase tracking-widest2 text-ink-500">
-            Illustrative only — real charts render from your query results.
-          </p>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -57,17 +63,24 @@ export function VisualizationSection({ onSelect = askDatabase }: { onSelect?: (q
 
 export function FinalCta() {
   return (
-    <section className="border-t border-ink-800 bg-ink-900 py-28 text-center">
-      <div className="section">
-        <p className="eyebrow mb-4">Ready when you are</p>
-        <h2 className="mx-auto max-w-2xl font-display text-3xl text-ink-100 sm:text-4xl">
-          Your database already has the answers.
-          <br />
-          <span className="italic text-accent-400">Ask the question.</span>
-        </h2>
-        <a href="#ask" className="btn-primary mt-10 inline-flex">
-          Try DataMind
-        </a>
+    <section className="relative border-t border-ink-800 bg-ink-900 py-28 text-center">
+      {/* Soft glow behind the CTA */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-500/8 blur-[100px]" />
+      <div className="section relative z-10">
+        <Reveal>
+          <p className="eyebrow mb-4">Ready when you are</p>
+          <h2 className="mx-auto max-w-2xl font-display text-3xl text-ink-100 sm:text-4xl">
+            Your database already has the answers.
+            <br />
+            <span className="italic bg-gradient-to-r from-accent-300 via-accent-400 to-accent-500 bg-clip-text text-transparent">
+              Ask the question.
+            </span>
+          </h2>
+          <a href="#ask" className="btn-primary mt-10 inline-flex group">
+            Try DataMind
+            <span className="inline-block transition-transform duration-300 ease-standard group-hover:translate-x-1" aria-hidden="true">→</span>
+          </a>
+        </Reveal>
       </div>
     </section>
   );
