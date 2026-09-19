@@ -29,9 +29,10 @@ function toChartData(result: QueryResult, xField: string, yField: string) {
 const tooltipStyle = {
   background: "#0a0d0f",
   border: "1px solid #20282d",
-  borderRadius: 2,
+  borderRadius: 8,
   color: "#e4e9eb",
   fontSize: 12,
+  boxShadow: "0 12px 32px -12px rgba(0, 0, 0, 0.55)",
 };
 
 export function ChartRenderer({
@@ -50,7 +51,7 @@ export function ChartRenderer({
   const data = toChartData(result, xField, yField);
 
   return (
-    <div className="rounded-sm border border-ink-800 bg-ink-950 p-5">
+    <div className="animate-scale-in rounded-lg border border-ink-800 bg-ink-950 p-5">
       <div className="mb-4 flex items-center justify-between">
         <span className="text-xs font-semibold uppercase tracking-widest2 text-ink-400">
           {config.title ?? "Visualization"}
@@ -73,7 +74,7 @@ export function ChartRenderer({
               />
               <YAxis stroke="#5a6b73" fontSize={11} tickLine={false} axisLine={{ stroke: "#20282d" }} />
               <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "rgba(79,214,198,0.08)" }} />
-              <Bar dataKey={yField} fill="#4fd6c6" radius={[2, 2, 0, 0]} />
+              <Bar dataKey={yField} fill="#4fd6c6" radius={[4, 4, 0, 0]} />
             </BarChart>
           ) : config.chartType === "line" ? (
             <LineChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
