@@ -96,7 +96,18 @@ export function ResultView({
             Download CSV
           </button>
         )}
-      </view-switch>
+      </div>
+
+      {/* Smooth cross-fade between table and chart views */}
+      <div key={activeView} className="animate-scale-in">
+        {activeView === "table" ? (
+          <ResultTable result={result} isWrite={isWrite} />
+        ) : activeConfig ? (
+          <ChartRenderer config={activeConfig} result={result} />
+        ) : (
+          <ResultTable result={result} isWrite={isWrite} />
+        )}
+      </div>
     </div>
   );
 }
