@@ -33,8 +33,11 @@ function formatCell(value: unknown, type: string): { display: string; isNull: bo
 export function ResultTable({ result, isWrite }: { result: QueryResult; isWrite?: boolean }) {
   if (result.rowCount === 0) {
     return (
-      <div className="rounded-sm border border-ink-800 bg-ink-950 px-5 py-10 text-center">
-        <p className="text-sm text-ink-400">
+      <div className="animate-scale-in rounded-lg border border-ink-800 bg-ink-950 px-5 py-10 text-center">
+        <svg viewBox="0 0 24 24" className="mx-auto h-8 w-8 text-ink-600" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+          <path d="M4 5h16M4 12h10M4 19h13" strokeLinecap="round" />
+        </svg>
+        <p className="mt-3 text-sm text-ink-400">
           {isWrite
             ? "The statement ran successfully."
             : "The query ran successfully and returned no rows."}
@@ -44,8 +47,8 @@ export function ResultTable({ result, isWrite }: { result: QueryResult; isWrite?
   }
 
   return (
-    <div className="rounded-sm border border-ink-800 bg-ink-950">
-      <div className="flex items-center justify-between border-b border-ink-800 px-5 py-3">
+    <div className="animate-scale-in overflow-hidden rounded-lg border border-ink-800 bg-ink-950">
+      <div className="flex items-center justify-between border-b border-ink-800 bg-ink-900/50 px-5 py-3">
         <span className="text-xs font-semibold uppercase tracking-widest2 text-ink-400">
           Results
         </span>
@@ -57,7 +60,7 @@ export function ResultTable({ result, isWrite }: { result: QueryResult; isWrite?
       <div className="scroll-thin overflow-x-auto">
         <table className="w-full min-w-max border-collapse text-left text-sm">
           <thead>
-            <tr className="border-b border-ink-800">
+            <tr className="border-b border-ink-800 bg-ink-900/30">
               {result.columns.map((col) => (
                 <th
                   key={col}
@@ -73,7 +76,7 @@ export function ResultTable({ result, isWrite }: { result: QueryResult; isWrite?
             {result.rows.map((row, i) => (
               <tr
                 key={i}
-                className="border-b border-ink-900 last:border-b-0 hover:bg-ink-900/60"
+                className="border-b border-ink-900 last:border-b-0 transition-colors duration-150 hover:bg-accent-500/5"
               >
                 {result.columns.map((col) => {
                   const type = result.columnTypes[col] ?? "string";

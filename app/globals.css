@@ -7,9 +7,20 @@
     scroll-behavior: smooth;
   }
 
+  body {
+    @apply bg-ink-950 text-ink-100 font-sans antialiased;
+  }
+
   ::selection {
     background-color: theme("colors.accent.500");
     color: theme("colors.ink.950");
+  }
+
+  /* Visible keyboard focus everywhere, tuned to the accent color */
+  :focus-visible {
+    outline: 2px solid theme("colors.accent.400");
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   /* Thin, editorial scrollbars for the SQL viewer / table overflow */
@@ -24,6 +35,9 @@
     background-color: theme("colors.ink.600");
     border-radius: 999px;
   }
+  .scroll-thin::-webkit-scrollbar-thumb:hover {
+    background-color: theme("colors.ink.500");
+  }
 }
 
 @layer components {
@@ -36,11 +50,26 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-sm bg-accent-500 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-950 transition-colors duration-200 hover:bg-accent-400 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-accent-500 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-950 transition-all duration-300 ease-out hover:bg-accent-400 hover:shadow-glow-sm disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:shadow-none;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-sm border border-ink-600 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-100 transition-colors duration-200 hover:border-accent-400 hover:text-accent-400;
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-ink-600 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-100 transition-all duration-300 ease-out hover:border-accent-400 hover:text-accent-400;
+  }
+
+  /* Card treatment shared by result, SQL, and confirmation surfaces */
+  .surface-card {
+    @apply rounded-lg border border-ink-800/80 bg-ink-900/60 backdrop-blur-sm;
+  }
+
+  .surface-card-hover {
+    @apply transition-all duration-300 ease-out hover:border-accent-500/50 hover:shadow-lift;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }
 

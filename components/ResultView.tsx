@@ -51,14 +51,16 @@ export function ResultView({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" role="tablist" aria-label="Result view">
           <button
             type="button"
+            role="tab"
+            aria-selected={activeView === "table"}
             onClick={() => setActiveView("table")}
-            className={`rounded-sm border px-4 py-2 text-xs font-semibold uppercase tracking-widest2 transition-colors ${
+            className={`rounded-md border px-4 py-2 text-xs font-semibold uppercase tracking-widest2 transition-all duration-300 ease-standard ${
               activeView === "table"
-                ? "border-accent-400 bg-accent-500/10 text-accent-400"
-                : "border-ink-700 text-ink-400 hover:text-ink-100"
+                ? "border-accent-400 bg-accent-500/10 text-accent-400 shadow-glow-sm"
+                : "border-ink-700 text-ink-400 hover:text-ink-100 hover:border-ink-500"
             }`}
           >
             Table
@@ -67,11 +69,13 @@ export function ResultView({
             <button
               key={v.chartType}
               type="button"
+              role="tab"
+              aria-selected={activeView === v.chartType}
               onClick={() => v.chartType && setActiveView(v.chartType)}
-              className={`rounded-sm border px-4 py-2 text-xs font-semibold uppercase tracking-widest2 transition-colors ${
+              className={`rounded-md border px-4 py-2 text-xs font-semibold uppercase tracking-widest2 transition-all duration-300 ease-standard ${
                 activeView === v.chartType
-                  ? "border-accent-400 bg-accent-500/10 text-accent-400"
-                  : "border-ink-700 text-ink-400 hover:text-ink-100"
+                  ? "border-accent-400 bg-accent-500/10 text-accent-400 shadow-glow-sm"
+                  : "border-ink-700 text-ink-400 hover:text-ink-100 hover:border-ink-500"
               }`}
             >
               {v.chartType ? CHART_LABELS[v.chartType] : ""}
@@ -83,9 +87,9 @@ export function ResultView({
           <button
             type="button"
             onClick={handleDownload}
-            className="flex items-center gap-2 rounded-sm border border-ink-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest2 text-ink-300 transition-colors hover:border-accent-400 hover:text-accent-400"
+            className="group flex items-center gap-2 rounded-md border border-ink-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest2 text-ink-300 transition-all duration-300 ease-standard hover:border-accent-400 hover:text-accent-400"
           >
-            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 transition-transform duration-300 ease-standard group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 3v12m0 0l-4-4m4 4l4-4" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -94,13 +98,16 @@ export function ResultView({
         )}
       </div>
 
-      {activeView === "table" ? (
-        <ResultTable result={result} isWrite={isWrite} />
-      ) : activeConfig ? (
-        <ChartRenderer config={activeConfig} result={result} />
-      ) : (
-        <ResultTable result={result} isWrite={isWrite} />
-      )}
+      {/* Smooth cross-fade between table and chart views */}
+      <div key={activeView} className="animate-scale-in">
+        {activeView === "table" ? (
+          <ResultTable result={result} isWrite={isWrite} />
+        ) : activeConfig ? (
+          <ChartRenderer config={activeConfig} result={result} />
+        ) : (
+          <ResultTable result={result} isWrite={isWrite} />
+        )}
+      </div>
     </div>
   );
 }
